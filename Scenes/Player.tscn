@@ -1,0 +1,158 @@
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
+[ext_resource path="res://Resources/Player/p1_walk/PNG/p1_walk10.png" type="Texture" id=2]
+[ext_resource path="res://Resources/Player/p1_walk/PNG/p1_walk08.png" type="Texture" id=3]
+[ext_resource path="res://Resources/Player/p1_walk/PNG/p1_walk11.png" type="Texture" id=4]
+[ext_resource path="res://Resources/Player/p1_walk/PNG/p1_walk03.png" type="Texture" id=5]
+[ext_resource path="res://Resources/Player/p1_stand.png" type="Texture" id=6]
+[ext_resource path="res://Resources/Player/p1_duck.png" type="Texture" id=7]
+[ext_resource path="res://Resources/Player/p1_walk/PNG/p1_walk06.png" type="Texture" id=8]
+[ext_resource path="res://Resources/Player/p1_walk/PNG/p1_walk04.png" type="Texture" id=9]
+[ext_resource path="res://Resources/Player/p1_walk/PNG/p1_walk09.png" type="Texture" id=10]
+[ext_resource path="res://Resources/Player/p1_walk/PNG/p1_walk01.png" type="Texture" id=11]
+[ext_resource path="res://Resources/Player/p1_walk/PNG/p1_walk07.png" type="Texture" id=12]
+[ext_resource path="res://Resources/Player/p1_walk/PNG/p1_walk02.png" type="Texture" id=13]
+[ext_resource path="res://Resources/Player/p1_walk/PNG/p1_walk05.png" type="Texture" id=14]
+[ext_resource path="res://Animations/duck_roll.tres" type="Animation" id=15]
+[ext_resource path="res://Resources/Player/p1_jump.png" type="Texture" id=16]
+[ext_resource path="res://Resources/Player/p1_hurt.png" type="Texture" id=17]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 7 ) ],
+"loop": true,
+"name": "duck",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 11 ), ExtResource( 13 ), ExtResource( 5 ), ExtResource( 9 ), ExtResource( 14 ), ExtResource( 8 ), ExtResource( 12 ), ExtResource( 3 ), ExtResource( 10 ), ExtResource( 2 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "run",
+"speed": 23.0
+}, {
+"frames": [ ExtResource( 16 ) ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 17 ) ],
+"loop": true,
+"name": "wallSlide",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 11 ), ExtResource( 13 ), ExtResource( 5 ), ExtResource( 9 ), ExtResource( 14 ), ExtResource( 8 ), ExtResource( 12 ), ExtResource( 3 ), ExtResource( 10 ), ExtResource( 2 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "walk",
+"speed": 15.0
+}, {
+"frames": [ ExtResource( 6 ) ],
+"loop": true,
+"name": "stand",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 34.6664, 46.6097 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 34.6487, 10 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 9.55418, 44.8454 )
+
+[node name="Player" type="KinematicBody2D"]
+script = ExtResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+rotation = 6.28319
+frames = SubResource( 1 )
+animation = "wallSlide"
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+drag_margin_v_enabled = true
+smoothing_enabled = true
+smoothing_speed = 30.0
+
+[node name="groundCheckArea" type="Area2D" parent="."]
+position = Vector2( 0, 38.1838 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="groundCheckArea"]
+modulate = Color( 0.188235, 0.862745, 0.141176, 1 )
+position = Vector2( 0, 0.707108 )
+shape = SubResource( 3 )
+
+[node name="leftWallCheckArea" type="Area2D" parent="."]
+position = Vector2( -26.595, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="leftWallCheckArea"]
+modulate = Color( 0.0196078, 0.0588235, 1, 1 )
+shape = SubResource( 4 )
+
+[node name="rightWallCheckArea" type="Area2D" parent="."]
+position = Vector2( 26.5949, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="rightWallCheckArea"]
+modulate = Color( 0.0196078, 0.0588235, 1, 1 )
+shape = SubResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/duck_roll = ExtResource( 15 )
+
+[node name="Timers" type="Node2D" parent="."]
+
+[node name="Walljump" type="Timer" parent="Timers"]
+wait_time = 0.13
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Inventory" type="Panel" parent="CanvasLayer/UI"]
+visible = false
+margin_left = 1342.72
+margin_top = 400.976
+margin_right = 1842.72
+margin_bottom = 700.976
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemList" type="ItemList" parent="CanvasLayer/UI/Inventory"]
+margin_left = 38.0
+margin_top = 53.0
+margin_right = 457.0
+margin_bottom = 267.0
+grow_horizontal = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="CanvasLayer/UI/Inventory"]
+margin_right = 200.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2.5, 2.5 )
+text = "Inventory"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="body_entered" from="groundCheckArea" to="." method="_on_groundCheckArea_body_entered"]
+[connection signal="body_exited" from="groundCheckArea" to="." method="_on_groundCheckArea_body_exited"]
+[connection signal="body_entered" from="leftWallCheckArea" to="." method="_on_leftWallCheckArea_body_entered"]
+[connection signal="body_exited" from="leftWallCheckArea" to="." method="_on_leftWallCheckArea_body_exited"]
+[connection signal="body_entered" from="rightWallCheckArea" to="." method="_on_rightWallCheckArea_body_entered"]
+[connection signal="body_exited" from="rightWallCheckArea" to="." method="_on_rightWallCheckArea_body_exited"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="timeout" from="Timers/Walljump" to="." method="_on_Walljump_timeout"]
